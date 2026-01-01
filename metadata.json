@@ -1,0 +1,8 @@
+{
+  "name": "Copy of EduGap Bridge",
+  "description": "A comprehensive learning platform designed to bridge education gaps through open resources and a rigorous volunteer tutoring program featuring exams and interviews.",
+  "requestFramePermissions": [
+    "camera",
+    "microphone"
+  ]
+}
