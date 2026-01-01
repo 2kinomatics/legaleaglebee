@@ -11,7 +11,6 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Simplified login for demo
     onLogin({
       id: 'u1',
       name: 'John Doe',
@@ -24,9 +23,9 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
 
   return (
     <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-slate-100 animate-in zoom-in duration-300">
+      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-[#f0f3f0] animate-in zoom-in duration-300">
         <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-blue-600 rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6">
+          <div className="mx-auto h-12 w-12 bg-[#7c9473] rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6">
             EB
           </div>
           <h2 className="text-3xl font-extrabold text-slate-900">
@@ -46,7 +45,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
                   type="text"
                   required
                   placeholder="Full Name"
-                  className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                  className="w-full pl-10 pr-4 py-3 bg-[#f8faf8] border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#8ba888] transition-all"
                 />
               </div>
             )}
@@ -56,7 +55,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
                 type="email"
                 required
                 placeholder="Email Address"
-                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-[#f8faf8] border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#8ba888] transition-all"
               />
             </div>
             <div className="relative">
@@ -65,7 +64,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
                 type="password"
                 required
                 placeholder="Password"
-                className="w-full pl-10 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+                className="w-full pl-10 pr-4 py-3 bg-[#f8faf8] border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#8ba888] transition-all"
               />
             </div>
           </div>
@@ -73,7 +72,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
           <div>
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all shadow-lg shadow-blue-200"
+              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-[#7c9473] hover:bg-[#6b8262] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8ba888] transition-all shadow-lg shadow-[#cbd9cb]"
             >
               {isSignUp ? 'Sign Up' : 'Sign In'}
               <ArrowRight className="ml-2" size={18} />
@@ -84,7 +83,7 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
         <div className="text-center mt-4">
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm font-semibold text-blue-600 hover:text-blue-500 transition-colors"
+            className="text-sm font-semibold text-[#7c9473] hover:text-[#6b8262] transition-colors"
           >
             {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
           </button>
