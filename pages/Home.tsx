@@ -128,7 +128,7 @@ const Home: React.FC<HomeProps> = ({ user, progress, onNavigateToSubject }) => {
           <div className="space-y-4 border-l-8 border-[#7c9473] pl-8">
             <h2 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Our Community</h2>
             <p className="text-slate-600 leading-relaxed text-lg font-medium max-w-5xl">
-              EduGap is a safe space for students in Grades 7-12. We believe everyone deserves a chance to learn, 
+              ᠠᠨᠢᠷ is a safe space for students in Grades 7-12. We believe everyone deserves a chance to learn, 
               no matter where they are. We bring together great books and kind tutors to help you reach your goals.
             </p>
           </div>
