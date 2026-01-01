@@ -1,6 +1,6 @@
 
 import React, { useState } from 'react';
-import { Send, Clock, ShieldCheck, CheckCircle2 } from 'lucide-react';
+import { Send, Clock, ShieldCheck, CheckCircle2, Award } from 'lucide-react';
 import { GradeLevel } from '../types';
 
 const TutorMatch: React.FC = () => {
@@ -47,16 +47,29 @@ const TutorMatch: React.FC = () => {
       </header>
 
       <div className="max-w-5xl space-y-12">
-        <div className="bg-[#fcfdfc] border border-slate-100 p-10 flex gap-8 items-start">
-          <div className="p-4 bg-slate-900 text-white shrink-0">
-            <ShieldCheck size={24} />
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+          <div className="bg-[#fcfdfc] border border-slate-100 p-10 flex gap-8 items-start">
+            <div className="p-4 bg-slate-900 text-white shrink-0">
+              <ShieldCheck size={24} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest">Privacy Protocol 3.0</h4>
+              <p className="text-xs text-slate-500 font-bold uppercase tracking-tight leading-relaxed">
+                Identification data remains encrypted until bi-lateral verification is achieved.
+              </p>
+            </div>
           </div>
-          <div className="space-y-2">
-            <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest">Privacy Protocol 3.0</h4>
-            <p className="text-xs text-slate-500 font-bold uppercase tracking-tight leading-relaxed">
-              Identification data remains encrypted until bi-lateral verification is achieved. 
-              All sessions are logged for instructional integrity.
-            </p>
+          
+          <div className="bg-[#fcfdfc] border border-slate-100 p-10 flex gap-8 items-start">
+            <div className="p-4 bg-[#7c9473] text-white shrink-0">
+              <Award size={24} />
+            </div>
+            <div className="space-y-2">
+              <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest">Assessed Mentors Only</h4>
+              <p className="text-xs text-slate-500 font-bold uppercase tracking-tight leading-relaxed">
+                All tutors have completed a 4-stage assessment: Domain Exam, Pedagogy Interview, Security Clearance, and Trial Sessions.
+              </p>
+            </div>
           </div>
         </div>
 

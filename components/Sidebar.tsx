@@ -2,17 +2,22 @@
 import React, { useState } from 'react';
 import { NAV_ITEMS } from '../constants';
 import { AppView } from '../types';
+import { Lock } from 'lucide-react';
 
 interface SidebarProps {
   currentView: AppView;
   setView: (view: AppView) => void;
+  isGuest?: boolean;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentView, setView, isGuest = false }) => {
   const [isHovered, setIsHovered] = useState(false);
   const currentItem = NAV_ITEMS.find(item => item.id === currentView);
-  // Fix: Removed self-reference in currentLabel assignment which caused use-before-declaration error
   const currentLabel = currentItem?.label || 'CORE';
+
+  const isPublicView = (viewId: string) => {
+    return ['home', 'resources', 'news', 'about', 'auth'].includes(viewId);
+  };
 
   return (
     <div 
@@ -46,18 +51,21 @@ const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
                 <button 
                   key={item.id} 
                   onClick={() => setView(item.id as AppView)}
-                  className={`text-[10px] font-black uppercase tracking-widest py-2 transition-colors cursor-pointer border-l-4 pl-3 text-left ${
+                  className={`text-[10px] font-black uppercase tracking-widest py-3 transition-colors cursor-pointer border-l-4 pl-3 text-left group flex items-center justify-between ${
                     currentView === item.id ? 'border-[#7c9473] text-slate-900 bg-slate-50' : 'border-transparent text-slate-400 hover:text-slate-600'
                   }`}
                 >
-                  {item.label}
+                  <span>{item.label}</span>
+                  {isGuest && !isPublicView(item.id) && (
+                    <Lock size={10} className="text-slate-300 group-hover:text-slate-400" />
+                  )}
                 </button>
               ))}
             </nav>
 
             <div className="pt-12 border-t border-slate-50">
               <div className="text-[10px] font-black text-slate-900 uppercase tracking-[0.3em]">System Version 3.2.4</div>
-              <p className="text-[10px] text-slate-400 mt-2 uppercase">Core Academic Interface</p>
+              <p className="text-[10px] text-slate-400 mt-2 uppercase">{isGuest ? 'Guest Access Mode' : 'Scholar Verified Mode'}</p>
             </div>
           </div>
         )}

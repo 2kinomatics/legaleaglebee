@@ -1,8 +1,52 @@
 
 import { GoogleGenAI, Type } from "@google/genai";
 
-// Fix: Strictly follow Gemini API initialization guidelines using process.env.API_KEY directly
 const ai = new GoogleGenAI({ apiKey: process.env.API_KEY });
+
+export const analyzeLearningGap = async (topic: string, gradeLevel: string) => {
+  try {
+    const response = await ai.models.generateContent({
+      model: 'gemini-3-flash-preview',
+      contents: `Perform a diagnostic analysis for a student in ${gradeLevel} who is struggling with "${topic}". 
+      Identify 3 potential "prerequisite gaps" (earlier concepts they might have missed) that cause this struggle. 
+      For each gap, provide a "Protocol Step" to fix it. 
+      Return a JSON object with: 
+      {
+        "rootCause": "string summary",
+        "gaps": [
+          {"concept": "string", "why": "string", "protocol": "string"}
+        ]
+      }`,
+      config: {
+        responseMimeType: "application/json",
+        responseSchema: {
+          type: Type.OBJECT,
+          properties: {
+            rootCause: { type: Type.STRING },
+            gaps: {
+              type: Type.ARRAY,
+              items: {
+                type: Type.OBJECT,
+                properties: {
+                  concept: { type: Type.STRING },
+                  why: { type: Type.STRING },
+                  protocol: { type: Type.STRING }
+                },
+                required: ["concept", "why", "protocol"]
+              }
+            }
+          },
+          required: ["rootCause", "gaps"]
+        }
+      }
+    });
+    
+    return JSON.parse(response.text || '{}');
+  } catch (error) {
+    console.error("Diagnostic Error:", error);
+    return null;
+  }
+};
 
 export const getStudyAdvice = async (subject: string, difficulty: string) => {
   try {

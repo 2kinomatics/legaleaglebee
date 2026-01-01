@@ -1,9 +1,10 @@
 
-import React from 'react';
+import React, { useState } from 'react';
 import ProgressCalendar from '../components/ProgressCalendar';
 import { MOCK_RESOURCES } from '../constants';
 import { User, UserProgress, Resource, SubjectCategory } from '../types';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Search, Activity, Cpu, AlertCircle } from 'lucide-react';
+import { analyzeLearningGap } from '../services/geminiService';
 
 interface HomeProps {
   user: User;
@@ -12,7 +13,20 @@ interface HomeProps {
 }
 
 const Home: React.FC<HomeProps> = ({ user, progress, onNavigateToSubject }) => {
+  const [diagnosticQuery, setDiagnosticQuery] = useState('');
+  const [isAnalyzing, setIsAnalyzing] = useState(false);
+  const [diagnosticResult, setDiagnosticResult] = useState<any>(null);
+
   const lastActive = MOCK_RESOURCES.find(r => r.id === progress.lastResource) || MOCK_RESOURCES[0];
+
+  const handleDiagnostic = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!diagnosticQuery.trim()) return;
+    setIsAnalyzing(true);
+    const result = await analyzeLearningGap(diagnosticQuery, user.gradeLevel);
+    setDiagnosticResult(result);
+    setIsAnalyzing(false);
+  };
 
   const groupedResources = MOCK_RESOURCES.filter(r => r.progress > 0).reduce((acc, resource) => {
     if (!acc[resource.subject]) {
@@ -28,6 +42,7 @@ const Home: React.FC<HomeProps> = ({ user, progress, onNavigateToSubject }) => {
       <div className="flex-1 space-y-16 w-full">
         {/* Welcome Section */}
         <section className="bg-slate-900 p-12 text-white shadow-xl relative overflow-hidden">
+          <div className="scanline"></div>
           <div className="relative z-10 w-full">
             <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase">Academic Standing: {user.name}</h1>
             <p className="text-slate-400 text-sm font-bold uppercase tracking-[0.3em] mb-10 max-w-3xl leading-relaxed">
@@ -40,6 +55,71 @@ const Home: React.FC<HomeProps> = ({ user, progress, onNavigateToSubject }) => {
               Resume Module: {lastActive.title}
             </button>
           </div>
+        </section>
+
+        {/* Diagnostic Tool - Learning Gap Analysis */}
+        <section className="bg-white border-2 border-slate-900 p-10 space-y-10 relative overflow-hidden">
+          <div className="flex items-center gap-4 border-b border-slate-100 pb-6">
+            <Cpu className="text-[#7c9473]" size={32} />
+            <div>
+              <h2 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Diagnostic Terminal</h2>
+              <p className="text-[10px] font-black text-slate-400 uppercase tracking-widest">Identifying core conceptual deficits</p>
+            </div>
+          </div>
+
+          {!diagnosticResult ? (
+            <form onSubmit={handleDiagnostic} className="space-y-6">
+              <p className="text-sm font-medium text-slate-600 uppercase tracking-tight leading-relaxed max-w-2xl">
+                Enter a concept or topic that is currently causing a block. The system will scan for prerequisite gaps in your knowledge base.
+              </p>
+              <div className="flex flex-col md:flex-row gap-4">
+                <input 
+                  type="text" 
+                  value={diagnosticQuery}
+                  onChange={(e) => setDiagnosticQuery(e.target.value)}
+                  placeholder="E.g., Integration by parts, Photosynthesis, Quadratic Formula..."
+                  className="flex-1 p-5 border border-slate-200 font-mono text-sm uppercase outline-none focus:border-slate-900"
+                />
+                <button 
+                  disabled={isAnalyzing}
+                  className="bg-slate-900 text-white px-12 py-5 font-black text-[10px] uppercase tracking-[0.2em] hover:bg-[#7c9473] transition-all disabled:bg-slate-200"
+                >
+                  {isAnalyzing ? 'Scanning Gaps...' : 'Initialize Analysis'}
+                </button>
+              </div>
+            </form>
+          ) : (
+            <div className="space-y-8 animate-in slide-in-from-top-4 duration-500">
+              <div className="bg-slate-50 p-6 border-l-4 border-slate-900">
+                <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-1">Root Cause Determination</div>
+                <p className="text-lg font-bold text-slate-900 uppercase tracking-tight">{diagnosticResult.rootCause}</p>
+              </div>
+
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                {diagnosticResult.gaps.map((gap: any, i: number) => (
+                  <div key={i} className="p-6 border border-slate-100 bg-white space-y-4">
+                    <div className="flex items-center gap-2">
+                      <AlertCircle size={14} className="text-[#7c9473]" />
+                      <span className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Deficit {i+1}</span>
+                    </div>
+                    <h4 className="font-black text-slate-900 uppercase text-xs tracking-tight">{gap.concept}</h4>
+                    <p className="text-[11px] text-slate-500 font-medium leading-relaxed uppercase">{gap.why}</p>
+                    <div className="pt-4 border-t border-slate-50">
+                      <div className="text-[9px] font-black text-[#7c9473] uppercase mb-1">Recovery Protocol:</div>
+                      <p className="text-[10px] text-slate-400 font-bold uppercase">{gap.protocol}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+
+              <button 
+                onClick={() => setDiagnosticResult(null)}
+                className="text-[10px] font-black text-slate-300 uppercase hover:text-slate-900 transition-colors tracking-widest"
+              >
+                Reset Diagnostic Terminal
+              </button>
+            </div>
+          )}
         </section>
 
         {/* Vision & Objectives */}
@@ -72,7 +152,7 @@ const Home: React.FC<HomeProps> = ({ user, progress, onNavigateToSubject }) => {
           </div>
         </section>
 
-        {/* Grouped Progress */}
+        {/* Course Progression */}
         <section className="space-y-12 w-full">
           <div className="flex justify-between items-center border-b border-slate-100 pb-4">
             <h2 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Course Progression Data</h2>
