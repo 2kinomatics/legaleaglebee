@@ -1,11 +1,13 @@
 
-export type AppView = 'home' | 'resources' | 'tutor-match' | 'tutor-apply' | 'settings' | 'auth' | 'profile' | 'news';
+export type AppView = 'home' | 'resources' | 'tutor-match' | 'tutor-apply' | 'settings' | 'auth' | 'profile' | 'news' | 'about';
 
 export enum GradeLevel {
-  EARLY = 'Early Learning (1-4)',
-  PRIMARY = 'Primary (5-8)',
-  ELEMENTARY = 'Elementary (9-10)',
-  MIDDLE = 'Pre-Teen (11-12)'
+  GRADE_7 = 'Grade 7',
+  GRADE_8 = 'Grade 8',
+  GRADE_9 = 'Grade 9',
+  GRADE_10 = 'Grade 10',
+  GRADE_11 = 'Grade 11',
+  GRADE_12 = 'Grade 12'
 }
 
 export type SubjectCategory = 'Literacy' | 'Mathematics' | 'Science' | 'Social Studies' | 'Arts & Creativity';
@@ -15,19 +17,29 @@ export interface Resource {
   title: string;
   subject: SubjectCategory;
   level: GradeLevel;
-  type: 'Video' | 'Story' | 'Activity' | 'Exercise';
+  type: 'Quiz' | 'Text' | 'Image';
   duration: string;
   progress: number;
   thumbnail?: string;
 }
 
-export interface NewsItem {
+export interface JournalComment {
+  id: string;
+  author: string;
+  text: string;
+  timestamp: string;
+}
+
+export interface JournalEntry {
   id: string;
   title: string;
-  category: 'Competition' | 'Update' | 'Event';
+  author: string;
+  category: string;
   date: string;
   content: string;
-  tag: string;
+  likes: number;
+  readTime: string;
+  comments: JournalComment[];
 }
 
 export interface UserProgress {
@@ -39,7 +51,7 @@ export interface UserProgress {
 export interface User {
   id: string;
   name: string;
-  email: string;
+  phoneNumber: string;
   language: 'en' | 'es' | 'fr';
   isTutor: boolean;
   gradeLevel: GradeLevel;

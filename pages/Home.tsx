@@ -1,27 +1,18 @@
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import ProgressCalendar from '../components/ProgressCalendar';
 import { MOCK_RESOURCES } from '../constants';
-import { User, UserProgress, Resource } from '../types';
-import { Play, CheckCircle, ArrowRight, Sparkles, BookOpen, Heart, Shield, Users } from 'lucide-react';
-import { getStudyAdvice } from '../services/geminiService';
+import { User, UserProgress, Resource, SubjectCategory } from '../types';
+import { ArrowRight } from 'lucide-react';
 
 interface HomeProps {
   user: User;
   progress: UserProgress;
+  onNavigateToSubject: (subject: SubjectCategory) => void;
 }
 
-const Home: React.FC<HomeProps> = ({ user, progress }) => {
-  const [advice, setAdvice] = useState<string[]>([]);
+const Home: React.FC<HomeProps> = ({ user, progress, onNavigateToSubject }) => {
   const lastActive = MOCK_RESOURCES.find(r => r.id === progress.lastResource) || MOCK_RESOURCES[0];
-
-  useEffect(() => {
-    const fetchAdvice = async () => {
-      const res = await getStudyAdvice(lastActive.subject, user.gradeLevel);
-      setAdvice(res);
-    };
-    fetchAdvice();
-  }, [lastActive, user.gradeLevel]);
 
   const groupedResources = MOCK_RESOURCES.filter(r => r.progress > 0).reduce((acc, resource) => {
     if (!acc[resource.subject]) {
@@ -32,124 +23,119 @@ const Home: React.FC<HomeProps> = ({ user, progress }) => {
   }, {} as Record<string, Resource[]>);
 
   return (
-    <div className="flex flex-col lg:flex-row gap-8 animate-in fade-in duration-500">
-      <div className="flex-1 space-y-12">
+    <div className="flex flex-col xl:flex-row gap-16 animate-in fade-in duration-500 w-full items-start text-left">
+      {/* Main Column */}
+      <div className="flex-1 space-y-16 w-full">
         {/* Welcome Section */}
-        <section className="bg-gradient-to-br from-[#8ba888] to-[#7c9473] rounded-3xl p-8 text-white shadow-lg relative overflow-hidden">
-          <div className="relative z-10">
-            <h1 className="text-3xl font-bold mb-2">Hello, {user.name}! 🌟</h1>
-            <p className="text-[#e8f0e8] opacity-90 mb-6">You're doing great! You've learned so many new things this month.</p>
-            <button className="bg-white text-[#7c9473] px-6 py-3 rounded-xl font-semibold flex items-center gap-2 hover:bg-slate-50 transition-colors">
-              Continue: {lastActive.title} <ArrowRight size={18} />
+        <section className="bg-slate-900 p-12 text-white shadow-xl relative overflow-hidden">
+          <div className="relative z-10 w-full">
+            <h1 className="text-5xl font-black mb-4 tracking-tighter uppercase">Academic Standing: {user.name}</h1>
+            <p className="text-slate-400 text-sm font-bold uppercase tracking-[0.3em] mb-10 max-w-3xl leading-relaxed">
+              Path: {user.gradeLevel} Curriculum | Tracks: {Object.keys(groupedResources).length} Active | Achievement: Verified
+            </p>
+            <button 
+              onClick={() => onNavigateToSubject(lastActive.subject)}
+              className="bg-[#7c9473] text-white px-10 py-5 rounded-none font-black text-[10px] uppercase tracking-[0.3em] hover:bg-[#6b8262] transition-all"
+            >
+              Resume Module: {lastActive.title}
             </button>
           </div>
-          <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full -mr-20 -mt-20 blur-2xl"></div>
         </section>
 
-        {/* Vision & Impact Section */}
-        <section className="bg-[#f0f4f0] rounded-3xl p-8 border border-[#e2e8e2]">
-          <div className="max-w-3xl">
-            <h2 className="text-2xl font-bold text-[#4a5d4b] mb-4">Our Mission: Bridging the Early Gap</h2>
-            <p className="text-slate-600 leading-relaxed mb-8">
-              EduGap Bridge is dedicated to ensuring that every child aged 1 to 12 has access to high-quality foundation learning. 
-              We aim to eliminate socioeconomic learning gaps by connecting young curious minds with open-source educational resources 
-              and a global community of vetted volunteer mentors.
+        {/* Vision & Objectives */}
+        <section className="w-full space-y-8">
+          <div className="space-y-4 border-l-8 border-slate-100 pl-8">
+            <h2 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Platform Protocol</h2>
+            <p className="text-slate-600 leading-relaxed text-lg font-medium max-w-5xl">
+              EduGap Bridge operates as a standardized protocol for Grades 7-12 education delivery. We leverage decentralized 
+              Open Educational Resources to eliminate learning gaps across diverse demographic populations.
             </p>
-            
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
-              <div className="bg-white p-5 rounded-2xl shadow-sm">
-                <div className="text-3xl font-bold text-[#7c9473] mb-1">12,400+</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Students Helped</div>
-              </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm">
-                <div className="text-3xl font-bold text-[#7c9473] mb-1">85%</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Gap Reduction</div>
-              </div>
-              <div className="bg-white p-5 rounded-2xl shadow-sm">
-                <div className="text-3xl font-bold text-[#7c9473] mb-1">45,000</div>
-                <div className="text-xs font-bold text-slate-400 uppercase tracking-widest">Volunteer Hours</div>
-              </div>
+          </div>
+          
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full">
+            <div className="p-10 bg-white border border-slate-100">
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Registered Scholars</div>
+              <div className="text-4xl font-black text-slate-900 tracking-tighter">12,400</div>
             </div>
-          </div>
-        </section>
-
-        {/* AI Recommendations */}
-        <section className="bg-white border border-[#f0f3f0] rounded-2xl p-6 shadow-sm">
-          <div className="flex items-center gap-2 mb-4">
-            <Sparkles className="text-[#b5c99a]" size={20} />
-            <h2 className="text-lg font-bold text-slate-800">Tips for Today's Learning</h2>
-          </div>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {advice.map((tip, i) => (
-              <div key={i} className="p-4 bg-[#f8faf8] rounded-xl text-sm text-slate-600 border border-[#edf1ed]">
-                {tip}
-              </div>
-            ))}
+            <div className="p-10 bg-white border border-slate-100">
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Mastery Index</div>
+              <div className="text-4xl font-black text-slate-900 tracking-tighter">94%</div>
+            </div>
+            <div className="p-10 bg-white border border-slate-100">
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Verified Mentors</div>
+              <div className="text-4xl font-black text-slate-900 tracking-tighter">480+</div>
+            </div>
+            <div className="p-10 bg-white border border-slate-100">
+              <div className="text-[10px] font-black text-slate-400 uppercase tracking-widest mb-2">Access Type</div>
+              <div className="text-4xl font-black text-slate-900 tracking-tighter">Open</div>
+            </div>
           </div>
         </section>
 
         {/* Grouped Progress */}
-        <section className="space-y-8">
-          <div className="flex justify-between items-center">
-            <h2 className="text-xl font-bold text-slate-800">Your Learning Journey</h2>
+        <section className="space-y-12 w-full">
+          <div className="flex justify-between items-center border-b border-slate-100 pb-4">
+            <h2 className="text-2xl font-black text-slate-900 tracking-tighter uppercase">Course Progression Data</h2>
+            <button 
+              onClick={() => onNavigateToSubject('All' as any)}
+              className="text-[#7c9473] text-[10px] font-black uppercase tracking-widest hover:underline"
+            >
+              Full Roadmap Manifest
+            </button>
           </div>
           
-          {Object.entries(groupedResources).length > 0 ? Object.entries(groupedResources).map(([subject, resources]) => (
-            <div key={subject} className="space-y-4">
-              <div className="flex items-center gap-3">
-                <div className="h-8 w-1.5 bg-[#8ba888] rounded-full"></div>
-                <h3 className="text-lg font-bold text-slate-700">{subject}</h3>
-              </div>
-              
-              <div className="grid gap-4">
-                {resources.map(resource => (
-                  <div key={resource.id} className="bg-white p-5 rounded-2xl border border-[#f0f3f0] shadow-sm flex items-center gap-5 hover:border-[#b5c99a] transition-all group">
-                    <div className={`w-12 h-12 rounded-xl flex items-center justify-center ${resource.progress === 100 ? 'bg-[#f0f7f0] text-[#7c9473]' : 'bg-[#f5f8f5] text-[#8ba888]'}`}>
-                      {resource.progress === 100 ? <CheckCircle size={24} /> : <BookOpen size={24} />}
-                    </div>
-                    <div className="flex-1">
-                      <h4 className="font-semibold text-slate-800">{resource.title}</h4>
-                      <div className="flex items-center gap-3 text-xs text-slate-400 mt-1">
-                        <span>{resource.type}</span>
-                        <span className="w-1 h-1 bg-slate-200 rounded-full"></span>
-                        <span>{resource.duration}</span>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 w-full">
+            {Object.entries(groupedResources).map(([subject, resources]) => (
+              <div key={subject} className="space-y-6">
+                <button 
+                  onClick={() => onNavigateToSubject(subject as SubjectCategory)}
+                  className="flex items-center gap-4 text-xs font-black text-slate-400 uppercase tracking-[0.4em] hover:text-[#7c9473] transition-colors group"
+                >
+                  {subject} <ArrowRight size={12} className="opacity-0 group-hover:opacity-100 transition-opacity" />
+                </button>
+                <div className="space-y-4">
+                  {resources.map(resource => (
+                    <div 
+                      key={resource.id} 
+                      onClick={() => onNavigateToSubject(resource.subject)}
+                      className="bg-white p-6 border border-slate-100 flex items-center justify-between hover:border-[#7c9473] transition-all cursor-pointer group/item"
+                    >
+                      <div className="flex-1">
+                        <h4 className="font-bold text-slate-800 text-sm uppercase tracking-tight mb-2 group-hover/item:text-[#7c9473]">{resource.title}</h4>
+                        <div className="flex items-center gap-4 text-[10px] font-black text-slate-300 uppercase tracking-widest">
+                          <span>{resource.type}</span>
+                          <span className="w-1 h-1 bg-slate-200"></span>
+                          <span>{resource.duration}</span>
+                        </div>
+                      </div>
+                      <div className="text-right pl-6 border-l border-slate-50">
+                        <div className="text-[10px] font-black text-slate-900 uppercase mb-2">{resource.progress}% Mastery</div>
+                        <div className="w-24 h-1 bg-slate-100 overflow-hidden">
+                          <div className="h-full bg-[#7c9473]" style={{ width: `${resource.progress}%` }}></div>
+                        </div>
                       </div>
                     </div>
-                    <div className="text-right hidden sm:block">
-                      <div className="text-sm font-medium text-slate-700">{resource.progress}%</div>
-                      <div className="w-32 h-1.5 bg-[#f0f3f0] rounded-full mt-2 overflow-hidden">
-                        <div 
-                          className="h-full bg-[#8ba888] transition-all duration-1000" 
-                          style={{ width: `${resource.progress}%` }}
-                        ></div>
-                      </div>
-                    </div>
-                  </div>
-                ))}
+                  ))}
+                </div>
               </div>
-            </div>
-          )) : (
-            <div className="p-12 text-center bg-white border border-dashed border-slate-200 rounded-3xl">
-              <p className="text-slate-400">Pick a lesson from the library to get started!</p>
-            </div>
-          )}
+            ))}
+          </div>
         </section>
       </div>
 
-      {/* Right Side Calendar */}
-      <aside className="w-full lg:w-80 shrink-0">
+      {/* Persistent Sidebar Column */}
+      <aside className="w-full xl:w-[400px] shrink-0 space-y-12 xl:sticky xl:top-[120px]">
         <ProgressCalendar completedDates={progress.completedDates} />
         
-        <div className="mt-8 bg-[#f5f8f5] rounded-2xl p-6 border border-[#e8f0e8]">
-          <div className="flex items-center gap-2 mb-3">
-            <Heart className="text-red-400" size={18} />
-            <h3 className="font-bold text-[#4a5d4b]">Stay Safe!</h3>
-          </div>
-          <p className="text-sm text-[#5c725d] mb-4 leading-relaxed">
-            All our mentors are verified by a committee. We never share your personal details with anyone.
+        <div className="bg-white border border-slate-200 p-10 space-y-6">
+          <div className="text-[10px] font-black text-slate-300 uppercase tracking-[0.4em] mb-4">Support Hub</div>
+          <h3 className="font-black tracking-tight text-2xl uppercase">Institutional Mentorship</h3>
+          <p className="text-sm text-slate-500 leading-relaxed font-medium">
+            Personalized academic guidance is available through our verified volunteer network. 
+            All sessions are monitored for educational integrity and system safety.
           </p>
-          <button className="w-full py-3 bg-[#7c9473] text-white rounded-xl font-semibold text-sm hover:bg-[#6b8262] transition-colors shadow-md shadow-[#d8e2d8]">
-            Talk to a Mentor
+          <button className="w-full py-5 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.2em] hover:bg-[#7c9473] transition-all">
+            Request Active Match
           </button>
         </div>
       </aside>

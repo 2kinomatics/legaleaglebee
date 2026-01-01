@@ -1,6 +1,5 @@
 
 import React, { useState } from 'react';
-import { Mail, Lock, User, ArrowRight } from 'lucide-react';
 
 interface AuthProps {
   onLogin: (user: any) => void;
@@ -13,79 +12,78 @@ const Auth: React.FC<AuthProps> = ({ onLogin }) => {
     e.preventDefault();
     onLogin({
       id: 'u1',
-      name: 'John Doe',
-      email: 'john@example.com',
+      name: 'Primary User',
+      phoneNumber: '555-0100',
       language: 'en',
       isTutor: false,
-      gradeLevel: 'High School (9-12)'
+      gradeLevel: 'Grade 10'
     });
   };
 
   return (
-    <div className="min-h-[80vh] flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
-      <div className="max-w-md w-full space-y-8 bg-white p-10 rounded-3xl shadow-xl border border-[#f0f3f0] animate-in zoom-in duration-300">
-        <div className="text-center">
-          <div className="mx-auto h-12 w-12 bg-[#7c9473] rounded-xl flex items-center justify-center text-white font-bold text-xl mb-6">
-            EB
+    <div className="w-full text-left py-12">
+      <div className="w-full space-y-8 animate-in fade-in duration-500">
+        <div className="border-b border-slate-100 pb-6">
+          <div className="font-black text-2xl text-[#7c9473] mb-4 tracking-tighter uppercase">
+            EB PROTOCOL
           </div>
-          <h2 className="text-3xl font-extrabold text-slate-900">
-            {isSignUp ? 'Create account' : 'Welcome back'}
+          <h2 className="text-4xl font-black text-slate-900 tracking-tight uppercase">
+            {isSignUp ? 'New Account Registration' : 'System Authentication'}
           </h2>
-          <p className="mt-2 text-sm text-slate-500">
+          <p className="mt-4 text-sm font-bold text-slate-500 uppercase tracking-widest">
             {isSignUp ? 'Join EduGap Bridge to start learning' : 'Sign in to access your progress'}
           </p>
         </div>
         
-        <form className="mt-8 space-y-6" onSubmit={handleSubmit}>
-          <div className="space-y-4">
+        <form className="mt-8 space-y-6 max-w-xl" onSubmit={handleSubmit}>
+          <div className="space-y-6">
             {isSignUp && (
-              <div className="relative">
-                <User className="absolute left-3 top-3.5 text-slate-400" size={18} />
+              <div className="space-y-1">
+                <label className="text-xs font-black uppercase text-slate-400 tracking-widest">Full Name</label>
                 <input
                   type="text"
                   required
-                  placeholder="Full Name"
-                  className="w-full pl-10 pr-4 py-3 bg-[#f8faf8] border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#8ba888] transition-all"
+                  placeholder="Identify yourself"
+                  className="w-full px-4 py-3 bg-[#f8faf8] border border-slate-200 outline-none focus:border-[#7c9473] transition-all font-bold text-slate-800"
                 />
               </div>
             )}
-            <div className="relative">
-              <Mail className="absolute left-3 top-3.5 text-slate-400" size={18} />
+            <div className="space-y-1">
+              <label className="text-xs font-black uppercase text-slate-400 tracking-widest">Phone Number</label>
               <input
-                type="email"
+                type="tel"
                 required
-                placeholder="Email Address"
-                className="w-full pl-10 pr-4 py-3 bg-[#f8faf8] border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#8ba888] transition-all"
+                placeholder="XXX-XXX-XXXX"
+                className="w-full px-4 py-3 bg-[#f8faf8] border border-slate-200 outline-none focus:border-[#7c9473] transition-all font-bold text-slate-800"
               />
             </div>
-            <div className="relative">
-              <Lock className="absolute left-3 top-3.5 text-slate-400" size={18} />
+            <div className="space-y-1">
+              <label className="text-xs font-black uppercase text-slate-400 tracking-widest">Access Key</label>
               <input
                 type="password"
                 required
-                placeholder="Password"
-                className="w-full pl-10 pr-4 py-3 bg-[#f8faf8] border border-slate-200 rounded-xl outline-none focus:ring-2 focus:ring-[#8ba888] transition-all"
+                placeholder="Enter password"
+                className="w-full px-4 py-3 bg-[#f8faf8] border border-slate-200 outline-none focus:border-[#7c9473] transition-all font-bold text-slate-800"
               />
             </div>
           </div>
 
-          <div>
+          <div className="pt-4">
             <button
               type="submit"
-              className="group relative w-full flex justify-center py-3 px-4 border border-transparent text-sm font-bold rounded-xl text-white bg-[#7c9473] hover:bg-[#6b8262] focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-[#8ba888] transition-all shadow-lg shadow-[#cbd9cb]"
+              className="w-full py-4 text-xs font-black uppercase tracking-widest text-white bg-[#7c9473] hover:bg-[#6b8262] transition-all"
             >
-              {isSignUp ? 'Sign Up' : 'Sign In'}
-              <ArrowRight className="ml-2" size={18} />
+              {isSignUp ? 'Register User' : 'Initialize Session'}
             </button>
           </div>
         </form>
 
-        <div className="text-center mt-4">
+        <div className="mt-4">
           <button
             onClick={() => setIsSignUp(!isSignUp)}
-            className="text-sm font-semibold text-[#7c9473] hover:text-[#6b8262] transition-colors"
+            className="text-xs font-black uppercase tracking-widest text-[#7c9473] hover:underline transition-colors"
           >
-            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Sign up"}
+            {isSignUp ? 'Already have an account? Sign in' : "Don't have an account? Request access"}
           </button>
         </div>
       </div>

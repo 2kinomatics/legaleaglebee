@@ -1,127 +1,98 @@
 
-import React, { useState } from 'react';
-import { Book, Calendar, ClipboardCheck, MessageSquare, CheckCircle2 } from 'lucide-react';
+import React from 'react';
+import { Users, Layout, ExternalLink, ArrowRight, ShieldCheck, Zap } from 'lucide-react';
 
 const TutorApplication: React.FC = () => {
-  const [step, setStep] = useState(1);
-  const [submitted, setSubmitted] = useState(false);
-
-  const steps = [
-    { id: 1, title: 'Eligibility', icon: <ClipboardCheck size={20} /> },
-    { id: 2, title: 'Exam', icon: <Book size={20} /> },
-    { id: 3, title: 'Interview', icon: <Calendar size={20} /> },
+  const servicePaths = [
+    {
+      id: 'mentor',
+      title: 'Instructional Asset (Mentor)',
+      icon: <Users size={32} />,
+      description: 'Provide direct academic guidance to scholars. Requires domain expertise in Grades 7-12 curriculum.',
+      requirements: [
+        'Subject mastery verification',
+        '2-hour weekly sync commitment',
+        'Pedagogical integrity training'
+      ],
+      link: 'https://forms.google.com/your-mentor-form-link'
+    },
+    {
+      id: 'operations',
+      title: 'Platform Operative',
+      icon: <Layout size={32} />,
+      description: 'Support the EB Protocol infrastructure. Roles include Web Development, Resource Synthesis, and Management.',
+      requirements: [
+        'Technical proficiency (React/OER)',
+        'Asynchronous contribution model',
+        'Infrastructure security awareness'
+      ],
+      link: 'https://forms.google.com/your-ops-form-link'
+    }
   ];
 
-  if (submitted) {
-    return (
-      <div className="max-w-2xl mx-auto py-20 text-center animate-in zoom-in duration-300">
-        <div className="w-20 h-20 bg-[#f0f7f0] text-[#7c9473] rounded-full flex items-center justify-center mx-auto mb-6">
-          <CheckCircle2 size={40} />
-        </div>
-        <h1 className="text-3xl font-bold text-slate-900 mb-4">Application Submitted!</h1>
-        <p className="text-slate-600 mb-8 leading-relaxed">
-          Great work! You've successfully completed the volunteer tutor application. 
-          Our committee will review your exam results and schedule your interview within 48 hours.
-        </p>
-        <button className="bg-[#7c9473] text-white px-8 py-3 rounded-xl font-semibold">
-          Return to Dashboard
-        </button>
-      </div>
-    );
-  }
+  const handleExternalRedirect = (url: string) => {
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
 
   return (
-    <div className="max-w-4xl mx-auto space-y-8 animate-in slide-in-from-bottom-4 duration-500">
-      <header className="text-center">
-        <h1 className="text-3xl font-bold text-slate-900">Become a Volunteer Tutor</h1>
-        <p className="text-slate-500 mt-2">Join our mission to bridge learning gaps worldwide.</p>
+    <div className="w-full space-y-20 animate-in fade-in duration-500 text-left">
+      <header className="space-y-4 border-b border-slate-100 pb-10">
+        <h1 className="text-4xl font-black text-slate-900 tracking-tight uppercase">Service Protocol Registry</h1>
+        <p className="text-slate-500 text-sm font-bold uppercase tracking-widest">Select your operational contribution track below.</p>
       </header>
 
-      {/* Progress Tracker */}
-      <div className="flex justify-between items-center relative px-4 max-w-lg mx-auto">
-        <div className="absolute h-0.5 bg-[#e2e8e2] top-1/2 left-0 right-0 -z-10 translate-y-[-50%]"></div>
-        {steps.map((s) => (
-          <div key={s.id} className="flex flex-col items-center gap-2">
-            <div className={`w-10 h-10 rounded-full flex items-center justify-center transition-all ${
-              step >= s.id ? 'bg-[#7c9473] text-white ring-4 ring-[#f0f7f0]' : 'bg-white border border-slate-200 text-slate-400'
-            }`}>
-              {s.icon}
+      <div className="grid grid-cols-1 xl:grid-cols-2 gap-10 max-w-7xl">
+        {servicePaths.map((path) => (
+          <div key={path.id} className="group bg-white border border-slate-100 p-12 space-y-10 flex flex-col justify-between hover:border-[#7c9473] transition-all">
+            <div className="space-y-8">
+              <div className="w-16 h-16 bg-slate-50 flex items-center justify-center text-slate-900 group-hover:bg-[#7c9473] group-hover:text-white transition-all">
+                {path.icon}
+              </div>
+              
+              <div className="space-y-4">
+                <h2 className="text-3xl font-black uppercase tracking-tighter text-slate-900">{path.title}</h2>
+                <p className="text-slate-500 text-sm font-medium leading-relaxed uppercase tracking-tight">
+                  {path.description}
+                </p>
+              </div>
+
+              <div className="space-y-4 pt-6 border-t border-slate-50">
+                <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest">Registry Requirements</div>
+                <ul className="space-y-3">
+                  {path.requirements.map((req, i) => (
+                    <li key={i} className="flex items-center gap-3 text-[10px] font-black text-slate-600 uppercase tracking-widest">
+                      <ShieldCheck size={14} className="text-[#7c9473]" />
+                      {req}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
-            <span className={`text-xs font-bold ${step >= s.id ? 'text-[#7c9473]' : 'text-slate-400'}`}>
-              {s.title}
-            </span>
+
+            <button 
+              onClick={() => handleExternalRedirect(path.link)}
+              className="w-full py-6 mt-12 bg-slate-900 text-white text-[10px] font-black uppercase tracking-[0.3em] flex items-center justify-center gap-4 hover:bg-[#7c9473] transition-all group-hover:shadow-xl group-hover:shadow-[#7c9473]/10"
+            >
+              Open Registry Form <ExternalLink size={14} />
+            </button>
           </div>
         ))}
       </div>
 
-      <main className="bg-white rounded-3xl p-8 border border-[#f0f3f0] shadow-sm min-h-[400px]">
-        {step === 1 && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-800">Pre-qualification Survey</h2>
-            <div className="space-y-4">
-              <label className="block p-4 bg-[#f8faf8] rounded-2xl border border-slate-200 cursor-pointer hover:border-[#8ba888] transition-colors">
-                <input type="checkbox" className="mr-3 rounded text-[#7c9473] focus:ring-[#7c9473]" />
-                <span className="text-sm font-medium text-slate-700">I have achieved excellence in the subjects I wish to tutor.</span>
-              </label>
-              <label className="block p-4 bg-[#f8faf8] rounded-2xl border border-slate-200 cursor-pointer hover:border-[#8ba888] transition-colors">
-                <input type="checkbox" className="mr-3 rounded text-[#7c9473] focus:ring-[#7c9473]" />
-                <span className="text-sm font-medium text-slate-700">I am available for at least 2 hours of tutoring per week.</span>
-              </label>
-              <label className="block p-4 bg-[#f8faf8] rounded-2xl border border-slate-200 cursor-pointer hover:border-[#8ba888] transition-colors">
-                <input type="checkbox" className="mr-3 rounded text-[#7c9473] focus:ring-[#7c9473]" />
-                <span className="text-sm font-medium text-slate-700">I am passionate about helping students overcome learning obstacles.</span>
-              </label>
-            </div>
+      <section className="bg-slate-50 p-12 border border-slate-100 max-w-7xl">
+        <div className="flex flex-col md:flex-row items-center gap-10">
+          <div className="p-4 bg-white border border-slate-200">
+            <Zap size={24} className="text-[#7c9473]" />
           </div>
-        )}
-
-        {step === 2 && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-800">Subject Excellence Exam</h2>
-            <div className="bg-[#f0f7f0] p-4 rounded-xl text-sm text-[#4a5d4b] flex gap-3">
-              <ClipboardCheck className="shrink-0" />
-              <p>This exam consists of 20 advanced questions in your chosen specialization to verify your knowledge depth.</p>
-            </div>
-            <div className="space-y-4">
-              <p className="font-medium text-slate-700">Question 1: Explain the concept of recursion in the context of efficiency.</p>
-              <textarea 
-                className="w-full p-4 rounded-xl border border-slate-200 h-32 focus:ring-2 focus:ring-[#7c9473] focus:border-transparent outline-none"
-                placeholder="Type your explanation here..."
-              ></textarea>
-            </div>
+          <div className="space-y-2">
+            <h4 className="text-xs font-black text-slate-900 uppercase tracking-widest">Validation Latency</h4>
+            <p className="text-xs text-slate-400 font-bold uppercase tracking-tight leading-relaxed">
+              Upon form submission, our administrative operatives will perform a manual review of your registry data. 
+              Expected synchronization time is 48-72 technical hours.
+            </p>
           </div>
-        )}
-
-        {step === 3 && (
-          <div className="space-y-6">
-            <h2 className="text-xl font-bold text-slate-800">Schedule Interview</h2>
-            <p className="text-slate-500">Pick a time slot for your committee interview.</p>
-            <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-              {['Mon 10:00 AM', 'Mon 02:00 PM', 'Tue 09:00 AM', 'Wed 04:00 PM', 'Fri 11:30 AM'].map(time => (
-                <button key={time} className="p-3 border border-slate-200 rounded-xl hover:bg-[#f0f7f0] hover:border-[#8ba888] transition-all text-sm font-medium text-slate-600">
-                  {time}
-                </button>
-              ))}
-            </div>
-          </div>
-        )}
-
-        <div className="mt-12 flex justify-between">
-          <button 
-            disabled={step === 1}
-            onClick={() => setStep(prev => prev - 1)}
-            className="px-6 py-3 text-slate-500 font-semibold disabled:opacity-30"
-          >
-            Previous
-          </button>
-          <button 
-            onClick={() => step === 3 ? setSubmitted(true) : setStep(prev => prev + 1)}
-            className="px-8 py-3 bg-[#7c9473] text-white rounded-xl font-semibold hover:bg-[#6b8262] shadow-md shadow-[#cbd9cb]"
-          >
-            {step === 3 ? 'Complete Application' : 'Next Step'}
-          </button>
         </div>
-      </main>
+      </section>
     </div>
   );
 };

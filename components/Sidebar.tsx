@@ -2,72 +2,65 @@
 import React, { useState } from 'react';
 import { NAV_ITEMS } from '../constants';
 import { AppView } from '../types';
-import { ChevronRight } from 'lucide-react';
 
 interface SidebarProps {
   currentView: AppView;
+  setView: (view: AppView) => void;
 }
 
-const Sidebar: React.FC<SidebarProps> = ({ currentView }) => {
+const Sidebar: React.FC<SidebarProps> = ({ currentView, setView }) => {
   const [isHovered, setIsHovered] = useState(false);
   const currentItem = NAV_ITEMS.find(item => item.id === currentView);
-  const currentLabel = currentItem?.label || 'EduGap';
-
-  // Breadcrumb simulation
-  const path = ['EduGap', currentLabel];
+  // Fix: Removed self-reference in currentLabel assignment which caused use-before-declaration error
+  const currentLabel = currentItem?.label || 'CORE';
 
   return (
     <div 
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
-      className={`fixed left-0 top-0 h-screen bg-white border-r border-[#e2e8e2] flex flex-col items-center z-50 transition-all duration-500 ease-in-out shadow-lg overflow-hidden ${
-        isHovered ? 'w-64' : 'w-12 md:w-16'
+      className={`fixed left-0 top-0 h-screen bg-white border-r border-slate-100 flex flex-col items-start z-50 transition-all duration-300 ease-in-out ${
+        isHovered ? 'w-64 shadow-2xl' : 'w-12 md:w-16'
       }`}
     >
-      <div className="h-full w-full flex flex-col relative">
-        {/* Vertical State */}
-        <div className={`absolute inset-0 flex flex-col items-center justify-center transition-opacity duration-300 ${isHovered ? 'opacity-0 pointer-events-none' : 'opacity-100'}`}>
-          <div className="rotate-[-90deg] whitespace-nowrap">
-            <span className="text-sm font-bold tracking-[0.2em] uppercase text-[#7c9473]">
-              {currentLabel}
-            </span>
-          </div>
-        </div>
-
-        {/* Expanded State */}
-        <div className={`flex flex-col p-8 transition-opacity duration-500 delay-100 ${isHovered ? 'opacity-100' : 'opacity-0'}`}>
-          <div className="mb-12">
-            <span className="text-2xl font-black text-[#7c9473] tracking-tighter">EB</span>
-          </div>
-          
-          <div className="space-y-2">
-            <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-4">Current Location</div>
-            <nav className="flex items-center flex-wrap gap-2 text-sm">
-              {path.map((segment, idx) => (
-                <React.Fragment key={idx}>
-                  <span className={`font-medium ${idx === path.length - 1 ? 'text-[#4a5d4b]' : 'text-slate-400'}`}>
-                    {segment}
-                  </span>
-                  {idx < path.length - 1 && <ChevronRight size={14} className="text-slate-300" />}
-                </React.Fragment>
-              ))}
-            </nav>
-            <div className="mt-6">
-              <h2 className="text-xl font-bold text-[#4a5d4b] leading-tight">
+      <div className="h-full w-full flex flex-col p-4 relative">
+        {!isHovered && (
+          <div className="absolute inset-0 flex flex-col items-center justify-center space-y-24">
+            <div className="font-black text-xl text-[#7c9473] uppercase tracking-tighter cursor-pointer" onClick={() => setView('home')}>EB</div>
+            <div className="rotate-[-90deg] whitespace-nowrap">
+              <span className="text-[10px] font-black tracking-[0.5em] uppercase text-slate-300">
                 {currentLabel}
-              </h2>
-              <p className="text-xs text-slate-400 mt-2 leading-relaxed">
-                Navigating through your personalized learning journey.
-              </p>
+              </span>
             </div>
           </div>
-        </div>
+        )}
 
-        <div className={`absolute bottom-8 left-0 w-full flex justify-center transition-opacity duration-300 ${isHovered ? 'opacity-100' : 'opacity-100'}`}>
-          <div className="text-[#c1ccc1] font-black text-xs tracking-widest">
-            EST. 2024
+        {isHovered && (
+          <div className="flex flex-col space-y-12 animate-in fade-in duration-300 w-full px-4">
+            <div className="pb-6 border-b border-slate-50">
+              <span className="text-2xl font-black text-[#7c9473] tracking-tighter uppercase cursor-pointer" onClick={() => setView('home')}>EDUGAP_BRIDGE</span>
+            </div>
+            
+            <nav className="flex flex-col space-y-4">
+              <div className="text-[10px] font-black text-slate-300 uppercase tracking-widest mb-2">Protocol Navigation</div>
+              {NAV_ITEMS.map((item) => (
+                <button 
+                  key={item.id} 
+                  onClick={() => setView(item.id as AppView)}
+                  className={`text-[10px] font-black uppercase tracking-widest py-2 transition-colors cursor-pointer border-l-4 pl-3 text-left ${
+                    currentView === item.id ? 'border-[#7c9473] text-slate-900 bg-slate-50' : 'border-transparent text-slate-400 hover:text-slate-600'
+                  }`}
+                >
+                  {item.label}
+                </button>
+              ))}
+            </nav>
+
+            <div className="pt-12 border-t border-slate-50">
+              <div className="text-[10px] font-black text-slate-900 uppercase tracking-[0.3em]">System Version 3.2.4</div>
+              <p className="text-[10px] text-slate-400 mt-2 uppercase">Core Academic Interface</p>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
