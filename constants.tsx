@@ -2,36 +2,36 @@
 import { GradeLevel, Resource, SubjectCategory, JournalEntry } from './types';
 
 export const MOCK_RESOURCES: Resource[] = [
-  { id: '1', title: 'Quadratic Equations Foundations', subject: 'Mathematics', level: GradeLevel.GRADE_9, type: 'Text', duration: '20m', progress: 100 },
-  { id: '2', title: 'Cell Biology Quiz: Organelles', subject: 'Science', level: GradeLevel.GRADE_8, type: 'Quiz', duration: '15m', progress: 80 },
-  { id: '3', title: 'The Cold War: Visual Timeline', subject: 'Social Studies', level: GradeLevel.GRADE_11, type: 'Image', duration: '10m', progress: 100 },
-  { id: '4', title: 'Shakespearean Sonnets Analysis', subject: 'Literacy', level: GradeLevel.GRADE_10, type: 'Text', duration: '25m', progress: 10 },
-  { id: '5', title: 'Organic Chemistry: Functional Groups Quiz', subject: 'Science', level: GradeLevel.GRADE_12, type: 'Quiz', duration: '30m', progress: 0 },
+  { id: '1', title: 'Quadratic Equations Basics', subject: 'Mathematics', level: GradeLevel.GRADE_9, type: 'Text', duration: '20m', progress: 100 },
+  { id: '2', title: 'Cell Biology Fun Quiz', subject: 'Science', level: GradeLevel.GRADE_8, type: 'Quiz', duration: '15m', progress: 80 },
+  { id: '3', title: 'The Cold War: Picture Story', subject: 'Social Studies', level: GradeLevel.GRADE_11, type: 'Image', duration: '10m', progress: 100 },
+  { id: '4', title: 'Reading Shakespeare Together', subject: 'Literacy', level: GradeLevel.GRADE_10, type: 'Text', duration: '25m', progress: 10 },
+  { id: '5', title: 'Chemistry: Molecules & Mixes', subject: 'Science', level: GradeLevel.GRADE_12, type: 'Quiz', duration: '30m', progress: 0 },
 ];
 
 export const MOCK_JOURNALS: JournalEntry[] = [
   { 
     id: 'j1', 
-    title: 'The Ethics of AI in Secondary Education', 
+    title: 'How AI helps us learn better', 
     author: 'Elena R. (Grade 11)', 
-    category: 'Analysis', 
-    date: '2024-05-15', 
+    category: 'Community', 
+    date: 'May 15, 2024', 
     readTime: '6 min',
     likes: 42,
-    content: 'As we integrate larger models into our learning frameworks, we must verify the provenance of data and the preservation of critical thinking...',
+    content: 'When we use technology in our classrooms, it opens up so many new ways to understand the world. I love how we can explore complex ideas together...',
     comments: [
-      { id: 'c1', author: 'Marcus T.', text: 'Interesting point on data provenance.', timestamp: '2h ago' }
+      { id: 'c1', author: 'Marcus T.', text: 'I love this perspective!', timestamp: '2h ago' }
     ]
   },
   { 
     id: 'j2', 
-    title: 'Bridging the Calculus Gap: A Personal Protocol', 
+    title: 'My Journey through Calculus', 
     author: 'Julian M. (Grade 12)', 
-    category: 'Mathematics', 
-    date: '2024-05-10', 
+    category: 'Math Tips', 
+    date: 'May 10, 2024', 
     readTime: '4 min',
     likes: 28,
-    content: 'Transitioning from algebra to calculus requires a fundamental shift in how we perceive infinitesimal change. Here is my strategy...',
+    content: 'Math used to be scary, but once I started looking at it like a puzzle, everything changed. Here are the tricks that helped me...',
     comments: []
   },
 ];
@@ -45,13 +45,13 @@ export const SUBJECT_METADATA: Record<SubjectCategory, { color: string; secondar
 };
 
 export const NAV_ITEMS = [
-  { id: 'home', label: 'Terminal' },
-  { id: 'resources', label: 'Repository' },
-  { id: 'news', label: 'Journal' },
-  { id: 'tutor-match', label: 'Mentors' },
-  { id: 'tutor-apply', label: 'Service' },
-  { id: 'about', label: 'About' },
-  { id: 'profile', label: 'Profile' },
+  { id: 'home', label: 'Home' },
+  { id: 'resources', label: 'Library' },
+  { id: 'news', label: 'Stories' },
+  { id: 'tutor-match', label: 'Find a Tutor' },
+  { id: 'tutor-apply', label: 'Volunteer' },
+  { id: 'about', label: 'Our Story' },
+  { id: 'profile', label: 'My Profile' },
   { id: 'settings', label: 'Settings' },
 ];
 
