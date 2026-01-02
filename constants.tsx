@@ -45,18 +45,18 @@ export const SUBJECT_METADATA: Record<SubjectCategory, { color: string; secondar
 };
 
 export const NAV_ITEMS = [
-  { id: 'home', label: 'Home' },
-  { id: 'resources', label: 'Library' },
+  { id: 'home', label: 'ᠨᠢᠭᠤᠷ' },
+  { id: 'resources', label: 'ᠨᠣᠮ ᠤ᠋ᠨ ᠰᠠᠩ' },
   { id: 'news', label: 'Stories' },
   { id: 'tutor-match', label: 'Find a Tutor' },
   { id: 'tutor-apply', label: 'Volunteer' },
   { id: 'about', label: 'Our Story' },
-  { id: 'profile', label: 'My Profile' },
+  { id: 'profile', label: 'ᠮᠢᠨᠤ ᠬᠠᠭᠤᠳᠠᠰᠤ' },
   { id: 'settings', label: 'Settings' },
 ];
 
 export const LANGUAGES = [
   { code: 'en', label: 'English' },
-  { code: 'es', label: 'Español' },
-  { code: 'fr', label: 'Français' },
+  { code: 'mgl', label: 'Mongolian' },
+
 ];
